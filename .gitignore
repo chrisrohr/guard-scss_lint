@@ -1,0 +1,9 @@
+.bundle
+Gemfile.lock
+/pkg
+
+# YARD
+/doc
+/.yardoc
+
+*.sublime-workspace

@@ -1,0 +1,7 @@
+scss_files: '../resources/**/*.scss'
+
+exclude: '../resources/invalid/**'
+
+linters:
+  PlaceholderInExtend:
+    enabled: false
