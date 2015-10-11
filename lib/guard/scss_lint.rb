@@ -9,6 +9,10 @@ module Guard
 
     attr_reader :options, :config
 
+    def self.non_namespaced_name
+      'scss_lint'
+    end
+
     def initialize(options = {})
       super
 
