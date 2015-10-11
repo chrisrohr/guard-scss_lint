@@ -13,6 +13,12 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
     end
   end
 
+  describe '#non_namespaced_name' do
+    it 'should be scss_lint' do
+      expect(Guard::ScssLint.non_namespaced_name).to eq('scss_lint')
+    end
+  end
+
   describe '#options' do
     subject { super().options }
 
