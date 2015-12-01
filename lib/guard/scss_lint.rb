@@ -54,7 +54,8 @@ module Guard
 
     def run(paths = [])
       @scss_lint_runner = SCSSLint::Runner.new @config
-      paths = paths.reject { |p| @config.excluded_file?(p) }
+      paths = paths.reject { |p| @config.excluded_file?(p) }.map { |path| { path: path } }
+
       @scss_lint_runner.run paths
       @scss_lint_runner.lints.each do |lint|
         Guard::Compat::UI.send lint.severity, lint_message(lint)
