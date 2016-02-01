@@ -116,7 +116,7 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
     end
 
     it 'inspects all scss files with scss lint' do
-      expect_any_instance_of(SCSSLint::Runner).to receive(:run).with(['a.scss'])
+      expect_any_instance_of(SCSSLint::Runner).to receive(:run).with([{ path: 'a.scss' }])
       guard.run_all
     end
   end
