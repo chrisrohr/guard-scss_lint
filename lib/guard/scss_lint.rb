@@ -57,10 +57,11 @@ module Guard
       @scss_lint_runner.lints.each do |lint|
         Guard::Compat::UI.send lint.severity, lint_message(lint)
       end
-      Guard::Compat::UI.info "Guard::ScssLint inspected #{paths.size} files, \
-            found #{@scss_lint_runner.lints.count} errors."
-      Guard::Compat::UI.notify("#{@scss_lint_runner.lints.count} errors found",
-                               title: 'Guard ScssLint issues found') if @scss_lint_runner.lints.count > 0
+
+      lints = @scss_lint_runner.lints.count
+      Guard::Compat::UI.info "Guard::ScssLint inspected #{paths.size} files, found #{lints} errors."
+      Guard::Compat::UI.notify("#{lints} errors found",
+                               title: 'Guard ScssLint issues found') if lints > 0
     end
 
     def lint_message(lint)
