@@ -6,7 +6,6 @@ require 'rainbow/ext/string'
 
 module Guard
   class ScssLint < Plugin
-
     attr_reader :options, :config
 
     def self.non_namespaced_name
@@ -16,16 +15,14 @@ module Guard
     def initialize(options = {})
       super
 
-      @options = {
-        all_on_start: true
-      }.merge(options)
+      @options = { all_on_start: true }.merge(options)
 
       config_file = @options[:config] || '.scss-lint.yml'
-      if File.exist?(config_file)
-        @config = SCSSLint::Config.load config_file
-      else
-        @config = SCSSLint::Config.default
-      end
+      @config = if File.exist?(config_file)
+                  SCSSLint::Config.load config_file
+                else
+                  SCSSLint::Config.default
+                end
 
       @scss_lint_runner = SCSSLint::Runner.new @config
       @failed_paths     = []
@@ -60,8 +57,10 @@ module Guard
       @scss_lint_runner.lints.each do |lint|
         Guard::Compat::UI.send lint.severity, lint_message(lint)
       end
-      Guard::Compat::UI.info "Guard::ScssLint inspected #{paths.size} files, found #{@scss_lint_runner.lints.count} errors."
-      Guard::Compat::UI.notify("#{@scss_lint_runner.lints.count} errors found", title: "Guard ScssLint issues found") if @scss_lint_runner.lints.count > 0
+      Guard::Compat::UI.info "Guard::ScssLint inspected #{paths.size} files, \
+            found #{@scss_lint_runner.lints.count} errors."
+      Guard::Compat::UI.notify("#{@scss_lint_runner.lints.count} errors found",
+                               title: 'Guard ScssLint issues found') if @scss_lint_runner.lints.count > 0
     end
 
     def lint_message(lint)

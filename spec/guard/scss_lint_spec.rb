@@ -62,7 +62,9 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
       it 'runs all' do
         expect(guard).to receive(:run_all)
         guard.start
-        expect(Guard::Compat::UI).to have_received(:info).with("Guard::ScssLint (SCSSLint version #{SCSSLint::VERSION}) is running")
+        expect(Guard::Compat::UI).to(
+          have_received(:info).with("Guard::ScssLint (SCSSLint version #{SCSSLint::VERSION}) is running")
+        )
       end
     end
 
@@ -72,7 +74,9 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
       it 'does nothing' do
         expect(guard).not_to receive(:run_all)
         guard.start
-        expect(Guard::Compat::UI).to have_received(:info).with("Guard::ScssLint (SCSSLint version #{SCSSLint::VERSION}) is running")
+        expect(Guard::Compat::UI).to(
+          have_received(:info).with("Guard::ScssLint (SCSSLint version #{SCSSLint::VERSION}) is running")
+        )
       end
     end
   end
@@ -82,7 +86,7 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
       it 'prints status message with zero errors' do
         allow_any_instance_of(SCSSLint::Runner).to receive(:run).and_return(true)
         subject
-        expect(Guard::Compat::UI).to have_received(:info).with("Guard::ScssLint inspected 1 files, found 0 errors.")
+        expect(Guard::Compat::UI).to have_received(:info).with('Guard::ScssLint inspected 1 files, found 0 errors.')
       end
 
       it 'does not notify of errors' do
@@ -96,12 +100,17 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
     context 'when failed' do
       it 'prints and notifies status message with non-zero errors' do
         allow_any_instance_of(SCSSLint::Runner).to receive(:run).and_return(false)
-        allow_any_instance_of(SCSSLint::Runner).to receive(:lints).and_return([
-          SCSSLint::Lint.new(SCSSLint::Linter::PropertySortOrder.new, 'a.scss', SCSSLint::Location.new, 'wrong order')
-        ])
+
+        linter = SCSSLint::Lint.new(
+          SCSSLint::Linter::PropertySortOrder.new,
+          'a.scss',
+          SCSSLint::Location.new,
+          'wrong order'
+        )
+        allow_any_instance_of(SCSSLint::Runner).to receive(:lints).and_return([linter])
         subject
-        expect(Guard::Compat::UI).to have_received(:info).with("Guard::ScssLint inspected 1 files, found 1 errors.")
-        expect(Guard::Compat::UI).to have_received(:notify).with("1 errors found", title: "Guard ScssLint issues found")
+        expect(Guard::Compat::UI).to have_received(:info).with('Guard::ScssLint inspected 1 files, found 1 errors.')
+        expect(Guard::Compat::UI).to have_received(:notify).with('1 errors found', title: 'Guard ScssLint issues found')
       end
     end
   end
