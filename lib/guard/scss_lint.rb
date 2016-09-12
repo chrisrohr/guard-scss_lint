@@ -64,18 +64,19 @@ module Guard
     end
 
     def lint_message(lint)
-      [Rainbow(lint.filename).color(:cyan),
-       ':',
-       Rainbow(lint.location.line.to_s).color(:magenta),
-       ':',
-       Rainbow(lint.location.column.to_s).color(:blue),
-       ' ',
-       lint_severity_abbrevation(lint),
-       ' ',
-       Rainbow(lint.linter.name).color(:green),
-       Rainbow(':').color(:green),
-       ' ',
-       lint.description
+      [
+        Rainbow(lint.filename).color(:cyan),
+        ':',
+        Rainbow(lint.location.line.to_s).color(:magenta),
+        ':',
+        Rainbow(lint.location.column.to_s).color(:blue),
+        ' ',
+        lint_severity_abbrevation(lint),
+        ' ',
+        Rainbow(lint.linter.name).color(:green),
+        Rainbow(':').color(:green),
+        ' ',
+        lint.description
       ].join
     end
 
