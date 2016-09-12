@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   # spec.add_dependency 'guard', '~> 2.2'
   spec.add_dependency 'guard-compat', '~> 1.1'
-  spec.add_dependency 'scss_lint', '~> 0.43.0'
+  spec.add_dependency 'scss_lint', '~> 0.43'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
