@@ -2,7 +2,6 @@ require 'guard/compat/plugin'
 require 'scss_lint'
 
 require 'rainbow'
-require 'rainbow/ext/string'
 
 module Guard
   class ScssLint < Plugin
@@ -65,16 +64,16 @@ module Guard
     end
 
     def lint_message(lint)
-      [lint.filename.color(:cyan),
+      [Rainbow(lint.filename).color(:cyan),
        ':',
-       lint.location.line.to_s.color(:magenta),
+       Rainbow(lint.location.line.to_s).color(:magenta),
        ':',
-       lint.location.column.to_s.color(:blue),
+       Rainbow(lint.location.column.to_s).color(:blue),
        ' ',
        lint_severity_abbrevation(lint),
        ' ',
-       lint.linter.name.color(:green),
-       ':'.color(:green),
+       Rainbow(lint.linter.name).color(:green),
+       Rainbow(':').color(:green),
        ' ',
        lint.description
       ].join
@@ -82,7 +81,7 @@ module Guard
 
     def lint_severity_abbrevation(lint)
       color = lint.severity == :error ? :red : :yellow
-      ['[', lint.severity.to_s[0].upcase, ']'].join.color(color)
+      Rainbow(['[', lint.severity.to_s[0].upcase, ']'].join).color(color)
     end
   end
 end
