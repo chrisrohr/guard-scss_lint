@@ -38,7 +38,7 @@ describe Guard::ScssLint, exclude_stubs: [Guard::Plugin] do
       describe '[:config]' do
         subject { super()[:config] }
         it 'uses default config from SCSS Lint' do
-          expect(guard.config).to eq(SCSSLint::Config.default)
+          expect(guard.config.file).to eq(SCSSLint::Config.default.file)
         end
       end
     end
