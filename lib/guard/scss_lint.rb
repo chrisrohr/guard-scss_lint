@@ -16,12 +16,7 @@ module Guard
 
       @options = { all_on_start: true }.merge(options)
 
-      config_file = @options[:config] || '.scss-lint.yml'
-      @config = if File.exist?(config_file)
-                  SCSSLint::Config.load config_file
-                else
-                  SCSSLint::Config.default
-                end
+      load_config
 
       @scss_lint_runner = SCSSLint::Runner.new @config
       @failed_paths     = []
@@ -48,7 +43,18 @@ module Guard
 
     private
 
+    def load_config
+      config_file = @options[:config] || '.scss-lint.yml'
+      @config = if File.exist?(config_file)
+                  SCSSLint::Config.load config_file
+                else
+                  SCSSLint::Config.default
+                end
+    end
+
     def run(paths = [])
+      load_config
+
       @scss_lint_runner = SCSSLint::Runner.new @config
       paths = paths.reject { |p| @config.excluded_file?(p) }.map { |path| { path: path } }
 
