@@ -38,13 +38,31 @@ module Guard
     end
 
     def run_on_changes(paths)
-      run paths.uniq
+      paths = paths.reject { |p| @config.excluded_file?(p) }.map { |path| { path: path } }
+
+      if paths.empty?
+        Guard::Compat::UI.info 'Guard has not detected any valid changes.  Skipping run'
+        return
+      end
+
+      if paths.size == 1 && paths[0][:path] == scss_config_file
+        Guard::Compat::UI.info 'Detected a change to the scss config file only.  Running Guard on all scss files'
+        run_all
+        return
+      end
+
+      Guard::Compat::UI.info "Running ScssLint on #{paths.reject { |p| p == scss_config_file }.uniq}"
+      run paths.reject { |p| p[:path] == scss_config_file }.uniq
     end
 
     private
 
+    def scss_config_file
+      @options[:config] || '.scss-lint.yml'
+    end
+
     def load_config
-      config_file = @options[:config] || '.scss-lint.yml'
+      config_file = scss_config_file
       @config = if File.exist?(config_file)
                   SCSSLint::Config.load config_file
                 else
@@ -56,8 +74,6 @@ module Guard
       load_config
 
       @scss_lint_runner = SCSSLint::Runner.new @config
-      paths = paths.reject { |p| @config.excluded_file?(p) }.map { |path| { path: path } }
-
       @scss_lint_runner.run paths
       @scss_lint_runner.lints.each do |lint|
         Guard::Compat::UI.send lint.severity, lint_message(lint)

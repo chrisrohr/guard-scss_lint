@@ -1,3 +1,4 @@
 guard 'scss_lint' do
   watch(%r{^app/assets/stylesheets/.+.scss})
+  watch(/^\.scss-lint\.yml/)
 end
